@@ -33,8 +33,7 @@ defmodule CodeCorps.Mixfile do
         :earmark,
         :ex_aws,
         :httpoison,
-        :arc_ecto,
-        :scrivener_ecto
+        :arc_ecto
       ]
     ]
   end
@@ -71,7 +70,6 @@ defmodule CodeCorps.Mixfile do
       {:httpoison, "~> 0.7"},
       {:poison, "~> 1.2"},
       {:canary, "~> 0.14.2"}, # Authorization
-      {:scrivener_ecto, "~> 1.0"} # DB query pagination
     ]
   end
 
