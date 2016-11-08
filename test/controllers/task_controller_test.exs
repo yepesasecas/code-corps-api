@@ -18,9 +18,9 @@ defmodule CodeCorps.TaskControllerTest do
       [task_1, task_2] = insert_pair(:task)
 
       conn
-        |> request_index
-        |> json_response(200)
-        |> assert_ids_from_response([task_1.id, task_2.id])
+      |> request_index
+      |> json_response(200)
+      |> assert_ids_from_response([task_1.id, task_2.id])
     end
 
     test "lists all entries newest first", %{conn: conn} do
@@ -139,7 +139,10 @@ defmodule CodeCorps.TaskControllerTest do
       project = insert(:project)
 
       attrs = @valid_attrs |> Map.merge(%{project: project})
-      assert conn |> request_create(attrs) |> json_response(201)
+      json =
+        conn
+        |> request_create(attrs)
+        |> json_response(201)
 
       # ensure record is reloaded from database before serialized, since number is added
       # on database level upon insert
