@@ -39,8 +39,8 @@ defmodule CodeCorps.TaskControllerTest do
         |> Enum.map(&Integer.parse/1)
         |> Enum.map(fn({id, _rem}) -> id end)
 
-      assert ids == [task_3.id, task_2.id, task_1.id]
-    end
+        assert ids == [task_3.id, task_2.id, task_1.id]
+      end
 
     test "lists all tasks for a project", %{conn: conn} do
       project_1 = insert(:project)
@@ -55,8 +55,8 @@ defmodule CodeCorps.TaskControllerTest do
         |> get("projects/#{project_1.id}/tasks")
         |> json_response(200)
 
-      assert json["data"] |> Enum.count == 2
-    end
+        assert json["data"] |> Enum.count == 2
+      end
 
     test "lists all tasks filtered by task_type", %{conn: conn} do
       project_1 = insert(:project)
@@ -70,17 +70,17 @@ defmodule CodeCorps.TaskControllerTest do
         |> get("projects/#{project_1.id}/tasks?task_type=idea,issue")
         |> json_response(200)
 
-      assert json["data"] |> Enum.count == 2
+        assert json["data"] |> Enum.count == 2
 
-      task_types =
-        json["data"]
-        |> Enum.map(fn(task_json) -> task_json["attributes"] end)
-        |> Enum.map(fn(task_attributes) -> task_attributes["task-type"] end)
+        task_types =
+          json["data"]
+          |> Enum.map(fn(task_json) -> task_json["attributes"] end)
+          |> Enum.map(fn(task_attributes) -> task_attributes["task-type"] end)
 
-      assert task_types |> Enum.member?("issue")
-      assert task_types |> Enum.member?("idea")
-      refute task_types |> Enum.member?("task")
-    end
+          assert task_types |> Enum.member?("issue")
+          assert task_types |> Enum.member?("idea")
+          refute task_types |> Enum.member?("task")
+        end
 
     test "lists all tasks filtered by status", %{conn: conn} do
       project = insert(:project)
@@ -92,20 +92,20 @@ defmodule CodeCorps.TaskControllerTest do
         |> get("projects/#{project.id}/tasks?status=open")
         |> json_response(200)
 
-      assert json["data"] |> Enum.count == 1
-      [task] = json["data"]
-      assert task["id"] == task_1.id |> Integer.to_string
+        assert json["data"] |> Enum.count == 1
+        [task] = json["data"]
+        assert task["id"] == task_1.id |> Integer.to_string
 
-      json =
-        conn
-        |> get("projects/#{project.id}/tasks?status=closed")
-        |> json_response(200)
+        json =
+          conn
+          |> get("projects/#{project.id}/tasks?status=closed")
+          |> json_response(200)
 
-      assert json["data"] |> Enum.count == 1
-      [task] = json["data"]
-      assert task["id"] == task_2.id |> Integer.to_string
-    end
-  end
+          assert json["data"] |> Enum.count == 1
+          [task] = json["data"]
+          assert task["id"] == task_2.id |> Integer.to_string
+        end
+      end
 
   describe "show" do
     test "shows chosen resource", %{conn: conn} do
@@ -144,20 +144,20 @@ defmodule CodeCorps.TaskControllerTest do
         |> request_create(attrs)
         |> json_response(201)
 
-      # ensure record is reloaded from database before serialized, since number is added
-      # on database level upon insert
-      assert json["data"]["attributes"]["number"] == 1
-    end
+        # ensure record is reloaded from database before serialized, since number is added
+        # on database level upon insert
+        assert json["data"]["attributes"]["number"] == 1
+      end
 
-    @tag :authenticated
-    test "renders 422 when data is invalid", %{conn: conn, current_user: current_user} do
-      assert conn |> request_create(@invalid_attrs) |> json_response(422)
-    end
+      @tag :authenticated
+      test "renders 422 when data is invalid", %{conn: conn, current_user: current_user} do
+        assert conn |> request_create(@invalid_attrs) |> json_response(422)
+      end
 
-    test "renders 401 when unauthenticated", %{conn: conn} do
-      assert conn |> request_create |> json_response(401)
+      test "renders 401 when unauthenticated", %{conn: conn} do
+        assert conn |> request_create |> json_response(401)
+      end
     end
-  end
 
   describe "update" do
     @tag :authenticated
@@ -194,8 +194,8 @@ defmodule CodeCorps.TaskControllerTest do
         |> get(path, page: %{page_size: 2})
         |> json_response(200)
 
-      assert json["data"] |> Enum.count == 2
-    end
+        assert json["data"] |> Enum.count == 2
+      end
 
     test "specifying a page number works", %{conn: conn} do
       project_1 = insert(:project)
@@ -211,10 +211,10 @@ defmodule CodeCorps.TaskControllerTest do
         |> get(path, page: %{ page: 2, page_size: 2 })
         |> json_response(200)
 
-      [ %{"id" => id} | _ ] = json["data"]
+        [ %{"id" => id} | _ ] = json["data"]
 
-      assert String.to_integer(id) == task_to_test.id
-    end
+        assert String.to_integer(id) == task_to_test.id
+      end
 
     test "paginated results include a valid meta key", %{conn: conn} do
       project_1 = insert(:project)
@@ -233,7 +233,7 @@ defmodule CodeCorps.TaskControllerTest do
         |> get(path, page: %{ page_size: 2 })
         |> json_response(200)
 
-      assert json["meta"] == meta
+        assert json["meta"] == meta
     end
   end
 end
