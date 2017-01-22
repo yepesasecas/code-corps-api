@@ -1,7 +1,6 @@
 defmodule CodeCorps.ElasticSearchHelper do
   alias Elastix.Search
   alias Elastix.Index
-  alias Elastix.Document
 
   @test_url Application.get_env(:code_corps, :elasticsearch_url)
   @test_index  Application.get_env(:code_corps, :elasticsearch_index)
@@ -15,39 +14,14 @@ defmodule CodeCorps.ElasticSearchHelper do
     Index.settings(url, "#{index}/_mapping/#{type}", field_filter)
   end
 
-  def init do
-    Index.settings(@test_url, @test_index, settings_map)
-    Index.settings(@test_url, "skills/_mapping/title", field_filter)
-
-    data = %{
-      title: "CSS"
-    }
-    Document.index @test_url, @test_index, "title", 1, data, [refresh: true]
-    data = %{
-      title: "Elixir"
-    }
-    Document.index @test_url, @test_index, "title", 2, data, [refresh: true]
-    data = %{
-      title: "Ruby"
-    }
-    Document.index @test_url, @test_index, "title", 3, data, [refresh: true]
-
-    data = %{
-      title: "Rails"
-    }
-    Document.index @test_url, @test_index, "title", 4, data, [refresh: true]
-  end
-
-  def search(search_query) do
-    init
-
+  def search(url, index, search_query) do
     data = %{
       query: %{
         match: %{ title: search_query }
       }
     }
 
-    response = Search.search @test_url, @test_index, [], data
+    response = Search.search url, index, [], data
 
     #response.status_code == 200 do
     #count = response.body["hits"]["total"]
