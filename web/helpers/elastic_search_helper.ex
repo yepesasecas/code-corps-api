@@ -1,6 +1,7 @@
 defmodule CodeCorps.ElasticSearchHelper do
   alias Elastix.Search
   alias Elastix.Index
+  alias Elastix.Document
 
   @test_url Application.get_env(:code_corps, :elasticsearch_url)
   @test_index  Application.get_env(:code_corps, :elasticsearch_index)
@@ -12,6 +13,10 @@ defmodule CodeCorps.ElasticSearchHelper do
   def create_index(url, index, type) do
     Index.settings(url, index, settings_map)
     Index.settings(url, "#{index}/_mapping/#{type}", field_filter)
+  end
+
+  def add_document(url, index, type, data, query) do
+    Document.index_new(url, index, type, data, query)
   end
 
   def search(url, index, search_query) do
