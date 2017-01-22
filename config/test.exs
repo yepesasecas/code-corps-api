@@ -36,8 +36,16 @@ config :code_corps, :stripe_env, :test
 
 config :code_corps, :icon_color_generator, CodeCorps.RandomIconColor.TestGenerator
 
+# Configure elasticsearch
+config :code_corps, :elasticsearch_url, "http://0.0.0.0:9200"
+config :code_corps, :elasticsearch_index,  "skills"
+
 # Set Corsica logging to output no console warning when rejecting a request
 config :code_corps, :corsica_log_level, [rejected: :debug]
+
+# Configure elasticsearch
+config :code_corps, :elasticsearch_url, "http://0.0.0.0:9200"
+config :code_corps, :elasticsearch_index,  "skills"
 
 config :sentry,
   environment_name: Mix.env || :test

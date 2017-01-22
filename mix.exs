@@ -4,7 +4,7 @@ defmodule CodeCorps.Mixfile do
   def project do
     [app: :code_corps,
      version: "0.0.1",
-     elixir: "1.3.4",
+     elixir: "1.4.0",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -94,7 +94,8 @@ defmodule CodeCorps.Mixfile do
       {:timber, "~> 0.4"}, # Logging
       {:timex, "~> 3.0"},
       {:timex_ecto, "~> 3.0"},
-      {:ecto_ordered, "0.2.0-beta1"}
+      {:ecto_ordered, "0.2.0-beta1"},
+      {:elastix, git: "https://github.com/paulsullivanjr/elastix.git"} # for elastic search
     ]
   end
 
