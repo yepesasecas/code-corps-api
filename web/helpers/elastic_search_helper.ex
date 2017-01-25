@@ -3,9 +3,6 @@ defmodule CodeCorps.ElasticSearchHelper do
   alias Elastix.Index
   alias Elastix.Document
 
-  @test_url Application.get_env(:code_corps, :elasticsearch_url)
-  @test_index  Application.get_env(:code_corps, :elasticsearch_index)
-
   def delete(url, index) do
     Index.delete(url, index)
   end

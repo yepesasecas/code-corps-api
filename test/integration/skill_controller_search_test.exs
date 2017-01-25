@@ -3,7 +3,7 @@ defmodule SkillControllerSearchIntegrationTest do
   alias CodeCorps.ElasticSearchHelper
 
   @test_url Application.get_env(:code_corps, :elasticsearch_url)
-  @test_index  Application.get_env(:code_corps, :elasticsearch_index)
+  @test_index  "skills"
   @type_value "title"
 
   setup do
