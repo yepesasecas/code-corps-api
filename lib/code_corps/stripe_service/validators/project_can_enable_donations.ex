@@ -3,7 +3,7 @@ defmodule CodeCorps.StripeService.Validators.ProjectCanEnableDonations do
   Ensures a `CodeCorps.Project` is able to receive subscriptions.
   """
 
-  alias CodeCorps.{Organization, Project, StripeConnectAccount}
+  alias CodeCorps.{Organization, Project, StripeConnectAccount, StripeConnectPlan}
 
   @doc """
   Determines if the provided `CodeCorps.Project` can enable donations.
@@ -13,12 +13,9 @@ defmodule CodeCorps.StripeService.Validators.ProjectCanEnableDonations do
 
   These are:
 
-  * At least one `CodeCorps.DonationGoal`
-
-  and only one of:
-
-  - `Organization` with a `StripeConnectAccount`, in production env, which has `charges_enabled: true`
-  - `Organization` with a `StripeConnectAccount`, not in production env
+  - At least one `CodeCorps.DonationGoal`
+  - `Organization` with a `StripeConnectAccount` which
+    has `charges_enabled: true` and `transfers_enabled: true`
 
   If the project has these relationships set up, it returns `{:ok, project}`
 
@@ -26,22 +23,10 @@ defmodule CodeCorps.StripeService.Validators.ProjectCanEnableDonations do
   """
   def validate(%Project{} = project), do: do_validate(project)
 
-  @invalid {:error, :project_not_ready}
-
+  defp do_validate(%Project{stripe_connect_plan: %StripeConnectPlan{}}), do: {:error, :project_has_plan}
   defp do_validate(%Project{
     donation_goals: [_h | _t],
-    organization: %Organization{stripe_connect_account: %StripeConnectAccount{charges_enabled: true}}
+    organization: %Organization{stripe_connect_account: %StripeConnectAccount{charges_enabled: true, transfers_enabled: true}}
   } = project), do: {:ok, project}
-
-  defp do_validate(%Project{
-    donation_goals: [_h | _t],
-    organization: %Organization{stripe_connect_account: %StripeConnectAccount{}}
-  } = project) do
-    case Application.get_env(:code_corps, :stripe_env) do
-      :prod -> @invalid
-      _ -> {:ok, project}
-    end
-  end
-
-  defp do_validate(_), do: @invalid
+  defp do_validate(_), do: {:error, :project_not_ready}
 end

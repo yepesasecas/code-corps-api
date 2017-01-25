@@ -127,10 +127,20 @@ defmodule CodeCorps.Factories do
     }
   end
 
+  def stripe_connect_charge_factory do
+    %CodeCorps.StripeConnectCharge{
+      id_from_stripe: sequence(:id_from_stripe, &"stripe_id_#{&1}"),
+      stripe_connect_account: build(:stripe_connect_account),
+      stripe_connect_customer: build(:stripe_connect_customer),
+      user: build(:user)
+    }
+  end
+
   def stripe_connect_customer_factory do
     %CodeCorps.StripeConnectCustomer{
       id_from_stripe: sequence(:id_from_stripe, &"stripe_id_#{&1}"),
       stripe_connect_account: build(:stripe_connect_account),
+      stripe_platform_customer: build(:stripe_platform_customer),
       user: build(:user)
     }
   end
@@ -156,6 +166,8 @@ defmodule CodeCorps.Factories do
     %CodeCorps.StripeEvent{
       endpoint: sequence(:endpoint, fn(_) -> Enum.random(~w{ connect platform }) end),
       id_from_stripe: sequence(:id_from_stripe, &"stripe_id_#{&1}"),
+      object_id: "cus_123",
+      object_type: "customer",
       status: sequence(:status, fn(_) -> Enum.random(~w{ unprocessed processed errored }) end),
       type: "test.type"
     }
@@ -171,6 +183,17 @@ defmodule CodeCorps.Factories do
   def stripe_file_upload_factory do
     %CodeCorps.StripeFileUpload{
       id_from_stripe: sequence(:id_from_stripe, &"stripe_id_#{&1}"),
+    }
+  end
+
+  def stripe_invoice_factory do
+    %CodeCorps.StripeInvoice{
+      id_from_stripe: sequence(:id_from_stripe, &"stripe_id_#{&1}"),
+      charge_id_from_stripe: sequence(:id_from_stripe, &"charge_stripe_id_#{&1}"),
+      customer_id_from_stripe: sequence(:id_from_stripe, &"customer_stripe_id_#{&1}"),
+      subscription_id_from_stripe: sequence(:subscription_id_from_stripe, &"subscription_stripe_id_#{&1}"),
+      stripe_connect_subscription: build(:stripe_connect_subscription),
+      user: build(:user)
     }
   end
 

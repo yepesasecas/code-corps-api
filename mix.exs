@@ -58,6 +58,7 @@ defmodule CodeCorps.Mixfile do
   defp deps do
     [
       {:bamboo, "~> 0.7"}, # emails
+      {:bamboo_postmark, "~> 0.2.0"}, # postmark adapter for emails
       {:phoenix, "~> 1.2.1"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.0"},
@@ -85,6 +86,7 @@ defmodule CodeCorps.Mixfile do
       {:ja_resource, "~> 0.2"},
       {:ja_serializer, "~> 0.11.0"}, # JSON API
       {:mix_test_watch, "~> 0.2", only: :dev}, # Test watcher
+      {:money, "~> 1.2.1"},
       {:poison, "~> 2.0"},
       {:scrivener_ecto, "~> 1.0"}, # DB query pagination
       {:segment, "~> 0.1"}, # Segment analytics
@@ -119,6 +121,8 @@ defmodule CodeCorps.Mixfile do
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"],
+     "ecto.migrate": ["ecto.migrate", "ecto.dump"],
+     "ecto.rollback": ["ecto.rollback", "ecto.dump"],
      "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
   end
 end

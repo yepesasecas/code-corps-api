@@ -12,6 +12,8 @@ config :code_corps, CodeCorps.Endpoint,
   code_reloader: true,
   check_origin: false
 
+config :code_corps, site_url: "http://localhost:4200"
+
 # Watch static and templates for browser reloading.
 config :code_corps, CodeCorps.Endpoint,
   live_reload: [
@@ -59,3 +61,6 @@ config :sentry,
 
 config :code_corps, CodeCorps.Mailer,
   adapter: Bamboo.LocalAdapter
+
+config :code_corps,
+  postmark_receipt_template: "123"
