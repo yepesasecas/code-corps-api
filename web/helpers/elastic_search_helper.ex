@@ -16,10 +16,10 @@ defmodule CodeCorps.ElasticSearchHelper do
     Document.index_new(url, index, type, data, query)
   end
 
-  def search(url, index, search_query) do
+  def search(url, index, type, search_query) do
     data = %{
       query: %{
-        match: %{ title: search_query }
+        match: to_map(type, search_query)
       }
     }
 
@@ -31,6 +31,8 @@ defmodule CodeCorps.ElasticSearchHelper do
     hits = response.body["hits"]["hits"] || []
     Enum.map(hits, fn(x) -> x["_source"]["title"] end)
   end
+
+  def to_map(foo, bar), do: %{ String.to_atom(foo) => bar}
 
   defp settings_map do
   %{
@@ -72,13 +74,3 @@ defmodule CodeCorps.ElasticSearchHelper do
     }
   end
 end
-
-# elastix index.ex gets:
-  # custom method
-  #  @doc false
-  #  def settings(elastic_url, name, data) do
-    #  elastic_url <> make_path(name)
-    # |> HTTP.put(Poison.encode!(data))
-    #    |> process_response
-    #  end
-

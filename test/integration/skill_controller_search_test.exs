@@ -14,17 +14,17 @@ defmodule SkillControllerSearchIntegrationTest do
   end
 
   test "search partial word" do
-   results = ElasticSearchHelper.search(@test_url, @test_index, "ru")
+   results = ElasticSearchHelper.search(@test_url, @test_index, "title", "ru")
    assert results == ["Ruby"]
   end
 
   test "search whole word" do
-    results = ElasticSearchHelper.search(@test_url, @test_index, "css")
+    results = ElasticSearchHelper.search(@test_url, @test_index, "title", "css")
     assert results == ["CSS"]
   end
 
   test "search no matches" do
-    results = ElasticSearchHelper.search(@test_url, @test_index, "foo")
+    results = ElasticSearchHelper.search(@test_url, @test_index, "title", "foo")
     assert results == []
   end
 
