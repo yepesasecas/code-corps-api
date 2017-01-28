@@ -29,9 +29,6 @@ defmodule SkillControllerSearchIntegrationTest do
   end
 
   def init do
-    ElasticSearchHelper.add_document(@test_url, @test_index, @type_value, %{title: "Elixir"}, [refresh: true])
-    ElasticSearchHelper.add_document(@test_url, @test_index, @type_value, %{title: "Ruby"}, [refresh: true])
-    ElasticSearchHelper.add_document(@test_url, @test_index, @type_value, %{title: "Rails"}, [refresh: true])
-    ElasticSearchHelper.add_document(@test_url, @test_index, @type_value, %{title: "CSS"}, [refresh: true])
+    ElasticSearchHelper.add_documents(@test_url, @test_index, @type_value, ["Elixir", "Ruby", "Rails", "CSS"], [refresh: true])
   end
 end

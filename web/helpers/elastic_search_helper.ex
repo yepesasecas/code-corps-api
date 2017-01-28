@@ -12,6 +12,10 @@ defmodule CodeCorps.ElasticSearchHelper do
     Index.settings(url, "#{index}/_mapping/#{type}", field_filter)
   end
 
+  def add_documents(url, index, type, documents, query) when is_list(documents) do
+    Enum.each(documents, fn(x) -> add_document(url, index, type, to_map(type, x), query) end)
+  end
+
   def add_document(url, index, type, data, query) do
     Document.index_new(url, index, type, data, query)
   end
@@ -35,30 +39,30 @@ defmodule CodeCorps.ElasticSearchHelper do
   def to_map(foo, bar), do: %{ String.to_atom(foo) => bar}
 
   defp settings_map do
-  %{
-      settings: %{
-        number_of_shards: 5,
-        analysis: %{
-          filter: %{
-            autocomplete_filter: %{
-              type:     "edge_ngram",
-              min_gram: 2,
-              max_gram: 20
-            }
-          },
-          analyzer: %{
-            autocomplete: %{
-              type:      "custom",
-              tokenizer: "standard",
-              filter: [
-                "lowercase",
-                "autocomplete_filter"
-              ]
+    %{
+        settings: %{
+          number_of_shards: 5,
+          analysis: %{
+            filter: %{
+              autocomplete_filter: %{
+                type:     "edge_ngram",
+                min_gram: 2,
+                max_gram: 20
+              }
+            },
+            analyzer: %{
+              autocomplete: %{
+                type:      "custom",
+                tokenizer: "standard",
+                filter: [
+                  "lowercase",
+                  "autocomplete_filter"
+                ]
+              }
             }
           }
         }
       }
-    }
   end
 
   defp field_filter do
