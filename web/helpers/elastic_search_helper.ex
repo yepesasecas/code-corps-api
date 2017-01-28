@@ -8,8 +8,8 @@ defmodule CodeCorps.ElasticSearchHelper do
   end
 
   def create_index(url, index, type) do
-    Index.settings(url, index, settings_map)
-    Index.settings(url, "#{index}/_mapping/#{type}", field_filter)
+    Index.settings(url, index, settings_map())
+    Index.settings(url, "#{index}/_mapping/#{type}", field_filter())
   end
 
   def add_documents(url, index, type, documents) when is_list(documents) do
@@ -35,14 +35,14 @@ defmodule CodeCorps.ElasticSearchHelper do
       }
     }
 
-    response = Search.search url, index, [], data
-
-    #response.status_code == 200 do
-    #count = response.body["hits"]["total"]
-
-    hits = response.body["hits"]["hits"] || []
-    Enum.map(hits, fn(x) -> x["_source"]["title"] end)
+    Search.search(url, index, [], data) |> process_response(type)
   end
+
+  def process_response(%HTTPoison.Response{status_code: 200} = response, type) do
+    response.body["hits"]["hits"] |> Enum.map(fn(x) -> x["_source"][type] end)
+  end
+
+  def process_response(_), do: []
 
   def to_map(foo, bar), do: %{ String.to_atom(foo) => bar}
 
