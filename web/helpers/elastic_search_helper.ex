@@ -12,8 +12,16 @@ defmodule CodeCorps.ElasticSearchHelper do
     Index.settings(url, "#{index}/_mapping/#{type}", field_filter)
   end
 
+  def add_documents(url, index, type, documents) when is_list(documents) do
+    add_documents(url, index, type, documents, [])
+  end
+
   def add_documents(url, index, type, documents, query) when is_list(documents) do
     Enum.each(documents, fn(x) -> add_document(url, index, type, to_map(type, x), query) end)
+  end
+
+  def add_document(url, index, type, data) do
+    add_document(url, index, type, data, [])
   end
 
   def add_document(url, index, type, data, query) do
