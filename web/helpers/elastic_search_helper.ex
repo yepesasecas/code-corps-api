@@ -9,7 +9,7 @@ defmodule CodeCorps.ElasticSearchHelper do
 
   def create_index(url, index, type) do
     Index.settings(url, index, settings_map())
-    Index.settings(url, "#{index}/_mapping/#{type}", field_filter())
+    Index.settings(url, "#{index}/_mapping/#{type}", field_filter(type))
   end
 
   def add_documents(url, index, type, documents) when is_list(documents) do
@@ -17,7 +17,7 @@ defmodule CodeCorps.ElasticSearchHelper do
   end
 
   def add_documents(url, index, type, documents, query) when is_list(documents) do
-    Enum.each(documents, fn(x) -> add_document(url, index, type, to_map(type, x), query) end)
+    Enum.each(documents, fn(x) -> add_document(url, index, type, %{"#{type}" => x}, query) end)
   end
 
   def add_document(url, index, type, data) do
@@ -31,10 +31,9 @@ defmodule CodeCorps.ElasticSearchHelper do
   def search(url, index, type, search_query) do
     data = %{
       query: %{
-        match: to_map(type, search_query)
+        match: %{"#{type}": search_query}
       }
     }
-
     Search.search(url, index, [], data) |> process_response(type)
   end
 
@@ -43,8 +42,6 @@ defmodule CodeCorps.ElasticSearchHelper do
   end
 
   def process_response(_), do: []
-
-  def to_map(foo, bar), do: %{ String.to_atom(foo) => bar}
 
   defp settings_map do
     %{
@@ -73,13 +70,13 @@ defmodule CodeCorps.ElasticSearchHelper do
       }
   end
 
-  defp field_filter do
+  def field_filter(type) do
     %{
-      title: %{
-        properties: %{
-          title: %{
-            "type":     "string",
-            "analyzer": "autocomplete"
+      "#{type}" => %{
+        "properties" => %{
+          "#{type}" => %{
+            "type" =>     "string",
+            "analyzer" =>  "autocomplete"
           }
         }
       }

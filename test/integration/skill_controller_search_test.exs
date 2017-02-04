@@ -18,8 +18,18 @@ defmodule SkillControllerSearchIntegrationTest do
    assert results == ["Ruby"]
   end
 
+  test "fuzzy search partial word" do
+    results = ElasticSearchHelper.search(@test_url, @test_index, "title", "rj")
+    assert results -- ["Ruby", "Rails"] == []
+  end
+
   test "search whole word" do
     results = ElasticSearchHelper.search(@test_url, @test_index, "title", "css")
+    assert results == ["CSS"]
+  end
+
+  test "fuzzy search whole word" do
+    results = ElasticSearchHelper.search(@test_url, @test_index, "title", "csw")
     assert results == ["CSS"]
   end
 
