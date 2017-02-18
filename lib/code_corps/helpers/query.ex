@@ -9,7 +9,7 @@ defmodule CodeCorps.Helpers.Query do
 
   # skill queries
 
-  def limit_filter(query, %{"limit" => count}) do
+  def limit_filter(query, %{"limit" => count}) when is_integer(count) do
     query |> limit(^count)
   end
   def limit_filter(query, _), do: query
