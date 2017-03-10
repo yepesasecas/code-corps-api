@@ -38,6 +38,11 @@ defmodule SkillControllerSearchIntegrationTest do
     assert results == []
   end
 
+  test "match all entries" do
+    results = ElasticSearchHelper.match_all(@test_url, @test_index, "title")
+    assert results -- ["Elixir", "Ruby", "Rails", "CSS"] == []
+  end
+
   def init do
     ElasticSearchHelper.add_documents(@test_url, @test_index, @type_value, ["Elixir", "Ruby", "Rails", "CSS"], [refresh: true])
   end

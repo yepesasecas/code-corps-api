@@ -37,6 +37,15 @@ defmodule CodeCorps.ElasticSearchHelper do
     Search.search(url, index, [], data) |> process_response(type)
   end
 
+  def match_all(url, index, type) do
+    data = %{
+      query: %{
+        match_all: %{}
+      }
+    }
+    Search.search(url, index, [], data) |> process_response(type)
+  end
+
   def process_response(%HTTPoison.Response{status_code: 200} = response, type) do
     response.body["hits"]["hits"] |> Enum.map(fn(x) -> x["_source"][type] end)
   end
