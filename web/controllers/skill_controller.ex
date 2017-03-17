@@ -9,6 +9,10 @@ defmodule CodeCorps.SkillController do
   plug :load_and_authorize_resource, model: Skill, only: [:create]
   plug JaResource
 
+  @elasticsearch_index "skills"
+  @elasticsearch_type "title"
+  @elasticsearch_url  Application.get_env(:code_corps, :elasticsearch_url)
+
   def filter(_conn, query, "id", id_list) do
     query |> id_filter(id_list)
   end
@@ -18,4 +22,9 @@ defmodule CodeCorps.SkillController do
     |> title_filter(params)
     |> limit_filter(params)
   end
+
+  def search(_conn, params) do
+    CodeCorps.ElasticSearchHelper.search(@elasticsearch_url, @elasticsearch_index, @elasticsearch_type, query)
+  end
+
 end

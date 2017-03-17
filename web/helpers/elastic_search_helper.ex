@@ -17,7 +17,7 @@ defmodule CodeCorps.ElasticSearchHelper do
   end
 
   def add_documents(url, index, type, documents, query) when is_list(documents) do
-    Enum.each(documents, fn(x) -> add_document(url, index, type, %{"#{type}" => x}, query) end)
+    Enum.each(documents, fn(x) -> add_document(url, index, type, x, query) end)
   end
 
   def add_document(url, index, type, data) do
@@ -47,7 +47,7 @@ defmodule CodeCorps.ElasticSearchHelper do
   end
 
   def process_response(%HTTPoison.Response{status_code: 200} = response, type) do
-    response.body["hits"]["hits"] |> Enum.map(fn(x) -> x["_source"][type] end)
+    response.body["hits"]["hits"] |> Enum.map(fn(x) -> x["_source"] end)
   end
 
   def process_response(_), do: []
