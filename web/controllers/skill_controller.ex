@@ -23,7 +23,7 @@ defmodule CodeCorps.SkillController do
     |> limit_filter(params)
   end
 
-  def search(_conn, %{"query" => query} = params) do
+  def search(_conn, %{"query" => query}) do
     CodeCorps.ElasticSearchHelper.search(@elasticsearch_url, @elasticsearch_index, @elasticsearch_type, query)
   end
 
