@@ -17,6 +17,7 @@ defmodule CodeCorps.Emails.ProjectUserAcceptanceEmail do
       project_logo: ImagePresenter.large(project),
       project_title: project.title,
       project_url: project |> preload() |> url(),
+      subject: "TODO: Put subject here",
       user_first_name: user.first_name,
       user_image: ImagePresenter.large(user)
     }
