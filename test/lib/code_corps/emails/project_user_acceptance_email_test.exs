@@ -16,8 +16,8 @@ defmodule CodeCorps.Emails.ProjectUserAcceptanceEmailTest do
     assert template_model == %{
       project_title: project.title,
       project_url: "http://localhost:4200/#{project.organization.slug}/#{project.slug}",
-      project_logo: "/icons/project_default_large_.png",
-      user_image: "/icons/user_default_large_.png",
+      project_logo: "#{Application.get_env(:code_corps, :asset_host)}/icons/project_default_large_.png",
+      user_image: "#{Application.get_env(:code_corps, :asset_host)}/icons/user_default_large_.png",
       user_first_name: user.first_name,
       subject: "TODO: Put subject here"
     }
