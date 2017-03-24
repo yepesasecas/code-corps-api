@@ -10,19 +10,19 @@ defmodule CodeCorps.Presenters.ImagePresenterTest do
 
   describe "large/1" do
     test "returns proper large image defaults for project" do
-      assert ImagePresenter.large(@project) == "/icons/project_default_large_.png"
+      assert ImagePresenter.large(@project) == "#{Application.get_env(:code_corps, :asset_host)}/icons/project_default_large_.png"
     end
     test "returns proper large image defaults for user" do
-      assert ImagePresenter.large(@user) == "/icons/user_default_large_.png"
+      assert ImagePresenter.large(@user) == "#{Application.get_env(:code_corps, :asset_host)}/icons/user_default_large_.png"
     end
   end
 
   describe "thumbnail/1" do
     test "returns proper thumbnail image defaults for project" do
-      assert ImagePresenter.thumbnail(@project) == "/icons/project_default_thumb_.png"
+      assert ImagePresenter.thumbnail(@project) == "#{Application.get_env(:code_corps, :asset_host)}/icons/project_default_thumb_.png"
     end
     test "returns proper thumbnail image defaults for user" do
-      assert ImagePresenter.thumbnail(@user) == "/icons/user_default_thumb_.png"
+      assert ImagePresenter.thumbnail(@user) == "#{Application.get_env(:code_corps, :asset_host)}/icons/user_default_thumb_.png"
     end
   end
 end
