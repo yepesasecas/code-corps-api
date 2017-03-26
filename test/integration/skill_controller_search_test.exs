@@ -26,6 +26,9 @@ defmodule SkillControllerSearchIntegrationTest do
 
   test "fuzzy search partial word" do
     results = ElasticSearchHelper.search(@test_url, @test_index, "title", "rj")
+    # Two lists can be concatenated or subtracted using the ++/2 and --/2
+    # see: http://elixir-lang.org/getting-started/basic-types.html#linked-lists
+    # This allows us to confirm the values we want regardless of the order the values are returned in.
     assert results -- ["Ruby", "Rails"] == []
   end
 
